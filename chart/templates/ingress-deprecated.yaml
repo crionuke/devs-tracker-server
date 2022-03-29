@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: devs-tracker-server-deprecated
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/tls-acme: "true"
+spec:
+  tls:
+    - hosts:
+        - {{ .Values.host.deprecated }}
+      secretName: devs-tracker-server-tls-deprecated
+  rules:
+    - host: {{ .Values.host.deprecated }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: devs-tracker-server
+                port:
+                  number: 8080

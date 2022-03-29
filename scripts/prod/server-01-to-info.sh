@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source ~/.profile
+ssh devstracker@${DEVS_TRACKER_PROD_SERVER_01_IP} -p ${DEVS_TRACKER_PROD_SERVER_01_PORT} "sed -i 's/export DEVS_TRACKER_LOGGING_LEVEL_COM_CRIONUKE_DEVSTRACKER=.*/export DEVS_TRACKER_LOGGING_LEVEL_COM_CRIONUKE_DEVSTRACKER=INFO/' ~/.profile"
+ssh devstracker@${DEVS_TRACKER_PROD_SERVER_01_IP} -p ${DEVS_TRACKER_PROD_SERVER_01_PORT} "source .profile; ./deploy.sh"

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devs-tracker-server
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: devs-tracker-server
+  template:
+    metadata:
+      labels:
+        app: devs-tracker-server
+    spec:
+      containers:
+        - name: devs-tracker-server
+          image: {{ .Values.image.name | quote }}
+          imagePullPolicy: Always
+          env:
+            {{- toYaml .Values.env | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            initialDelaySeconds: 30
+            failureThreshold: 6
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: http
+            initialDelaySeconds: 60
+            failureThreshold: 6
+            periodSeconds: 10
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
